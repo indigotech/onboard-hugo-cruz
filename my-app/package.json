@@ -1,5 +1,8 @@
 {
-  "name": "my-app",
+  "name": "onboard-hugo-cruz",
+  "version": "2.0.0",
+  "repository": "https://github.com/indigotech/onboard-hugo-cruz.git",
+  "author": "Hugo Cruz <hmartins19@gmail.com>",
   "scripts": {
     "start": "ts-node src/index.ts"
   },
