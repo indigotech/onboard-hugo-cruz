@@ -2,11 +2,13 @@
     "compilerOptions": {
       "target": "es5",
       "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
       "allowJs": true,
       "moduleResolution": "node",
       "module": "commonjs",
       "sourceMap": true,
       "rootDir": "src",
+      "baseUrl":"src",
       "outDir": "dist",
       "lib": [
         "esnext", "dom"
