@@ -1,3 +1,6 @@
+import 'reflect-metadata';
+import  { configServer } from './config'
+
 const { GraphQLServer } = require('graphql-yoga')
 
 const typeDefs = `
@@ -15,4 +18,7 @@ const server = new GraphQLServer({
   typeDefs,
   resolvers,
 })
+
+configServer();
+
 server.start(() => console.log(`Server is running on http://localhost:4000`))
