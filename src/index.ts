@@ -1,20 +1,31 @@
 import 'reflect-metadata';
 import{createConnection, getRepository } from 'typeorm';
-import { User } from './User';
+import { User } from './entities/User';
 
 const { GraphQLServer } = require('graphql-yoga')
 
 const typeDefs = `
-type User {
+type UserType {
   id: ID!
   name: String!
   email: String!
+  birthDate: Data!
+  cpf: Int!
+}
+type LoginInputType {
+  email: String!
+  password: String!
+}
+type LoginType {
+  user: UserType!
+  token: String!
 }
 type Mutation {
-  addUser(name: String!, email: String!): User
+  login(data:LoginInputType!): LoginType!
 }
 `
 const resolvers = {
+ 
   Mutation: {
     // this is the addUser resolver
     addUser: (_, { name, email }) => {
