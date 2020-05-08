@@ -10,4 +10,14 @@ export class User {
 
   @Column()
   email: string
+
+  @Column()
+  birthDate: string
+
+  @Column()
+  cpf: string
+
+  @Column()
+  password: string
+
 }

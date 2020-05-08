@@ -1,38 +1,66 @@
 import 'reflect-metadata';
-import{createConnection, getRepository } from 'typeorm';
+import{createConnection, getRepository, Repository } from 'typeorm';
 import { User } from './entities/User';
 
 const { GraphQLServer } = require('graphql-yoga')
 
 const typeDefs = `
+input LoginInputType {
+  email: String!
+  password: String!
+}
 type UserType {
   id: ID!
   name: String!
   email: String!
-  birthDate: Data!
+  birthDate: String!
   cpf: Int!
-}
-type LoginInputType {
-  email: String!
-  password: String!
 }
 type LoginType {
   user: UserType!
   token: String!
 }
+type Query {
+  user(id: ID!): UserType!
+}
 type Mutation {
   login(data:LoginInputType!): LoginType!
 }
 `
+
+class LoginType {
+  user: User;
+  token: string;
+
+  constructor( user: User ,token: string ) {
+    this.user = user;
+    this.token = token;
+  }
+}
+
 const resolvers = {
- 
+  
   Mutation: {
-    // this is the addUser resolver
-    addUser: (_, { name, email }) => {
-      const user = new User()
-      user.email = email
-      user.name = name
-      return getRepository(User).save(user)
+    // this is the login resolver
+    login: async (_, { data } ) => {
+      const repo: Repository<User> = getRepository(User);
+
+      const user: User = await repo.findOne({
+        where: [
+          { email: data.email }
+        ]
+      });
+        console.log("Deu ruim!");
+      
+      if (user.password == data.password) {
+
+        const token = "";
+        console.log("Deu bom!")
+        return new LoginType(user, token);
+
+      } else {
+        console.log("Deu ruim!")
+      };
     },
   },
 }
