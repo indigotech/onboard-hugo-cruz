@@ -39,13 +39,25 @@ class LoginType {
 }
 
 const resolvers = {
+
+  Query: {
+    
+    async user (_, { id }){
+      const user: User = await getRepository(User).findOne(id);
+
+      if (user == undefined) {
+        throw ("Invalid id.");
+      }
+      
+      return user;
+    },
+  },
   
   Mutation: {
-    // this is the login resolver
-    login: async (_, { data } ) => {
-      const repo: Repository<User> = getRepository(User);
 
-      const user: User = await repo.findOne({
+    login: async (_, { data } ) => {
+  
+      const user: User = await getRepository(User).findOne({
         where: [
           { email: data.email }
         ]
@@ -58,7 +70,7 @@ const resolvers = {
       if (user.password == data.password) {
 
         const token = "";
-        
+
         return new LoginType(user, token);
 
       } else {
