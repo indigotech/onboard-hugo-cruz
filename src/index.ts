@@ -50,16 +50,19 @@ const resolvers = {
           { email: data.email }
         ]
       });
-        console.log("Deu ruim!");
       
+      if (user == undefined) {
+        throw ("Invalid credentials, please check your e-mail and password");
+      }
+
       if (user.password == data.password) {
 
         const token = "";
-        console.log("Deu bom!")
+        
         return new LoginType(user, token);
 
       } else {
-        console.log("Deu ruim!")
+        throw ("Invalid credentials, please check your e-mail and password");
       };
     },
   },
