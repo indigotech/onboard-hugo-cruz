@@ -2,6 +2,8 @@ import 'reflect-metadata';
 import{createConnection, getRepository, Repository } from 'typeorm';
 import { User } from './entities/User';
 
+var crypto = require('crypto')
+
 const { GraphQLServer } = require('graphql-yoga')
 
 const typeDefs = `
@@ -67,6 +69,7 @@ const resolvers = {
         throw ("Invalid credentials, please check your e-mail and password");
       }
 
+      data.password = crypto.createHash('md5').update(data.password).digest("hex");
       if (user.password == data.password) {
 
         const token = "";

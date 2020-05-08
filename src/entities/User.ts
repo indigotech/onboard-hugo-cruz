@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert } from 'typeorm'
+
+var crypto = require('crypto')
 
 @Entity()
 export class User {
@@ -20,4 +22,8 @@ export class User {
   @Column()
   password: string
 
+  @BeforeInsert()
+  hashpassword(){
+    crypto.createHash('md5').update(this.password).digest("hex");
+  }
 }
