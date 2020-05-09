@@ -1,8 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, Unique } from 'typeorm'
 
 var crypto = require('crypto')
 
 @Entity()
+@Unique(["email"])
 export class User {
   @PrimaryGeneratedColumn()
   id: number

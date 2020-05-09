@@ -3,6 +3,8 @@ import{createConnection, getRepository } from 'typeorm';
 import { User } from './entities/User';
 
 var crypto = require('crypto')
+var jwt = require('jsonwebtoken');
+const APP_SECRET = 'PASSWORLD'; // signature
 
 const { GraphQLServer } = require('graphql-yoga')
 
@@ -72,7 +74,7 @@ const resolvers = {
       data.password = crypto.createHash('md5').update(data.password).digest("hex");
       if (user.password == data.password) {
 
-        const token = "";
+        const token = jwt.sign({ userId: user.id }, APP_SECRET, {expiresIn: 30000}); // nearly 1 week
 
         return new LoginType(user, token);
 
