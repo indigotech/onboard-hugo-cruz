@@ -12,6 +12,7 @@ const typeDefs = `
 input LoginInputType {
   email: String!
   password: String!
+  rememberMe: Boolean
 }
 type UserType {
   id: ID!
@@ -74,7 +75,14 @@ const resolvers = {
       data.password = crypto.createHash('md5').update(data.password).digest("hex");
       if (user.password == data.password) {
 
-        const token = jwt.sign({ userId: user.id }, APP_SECRET, {expiresIn: 30000}); // nearly 1 week
+        var exp_time: number = 600; // expiration time: 10 min
+
+        // if rememberme is true, expiration time: nearly 1 week
+        if (data.rememberMe){
+          exp_time = 300000;
+        };
+
+        const token = jwt.sign({ userId: user.id }, APP_SECRET, {expiresIn: exp_time}); 
 
         return new LoginType(user, token);
 
