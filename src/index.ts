@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import{createConnection, getRepository, Repository } from 'typeorm';
+import{createConnection, getRepository } from 'typeorm';
 import { User } from './entities/User';
 
 var crypto = require('crypto')
@@ -48,7 +48,7 @@ const resolvers = {
       const user: User = await getRepository(User).findOne(id);
 
       if (user == undefined) {
-        throw ("Invalid id.");
+        throw new Error("Invalid id.");
       }
       
       return user;
@@ -66,7 +66,7 @@ const resolvers = {
       });
       
       if (user == undefined) {
-        throw ("Invalid credentials, please check your e-mail and password");
+        throw new Error("Invalid credentials, please check your e-mail and password");
       }
 
       data.password = crypto.createHash('md5').update(data.password).digest("hex");
@@ -77,7 +77,7 @@ const resolvers = {
         return new LoginType(user, token);
 
       } else {
-        throw ("Invalid credentials, please check your e-mail and password");
+        throw new Error("Invalid credentials, please check your e-mail and password");
       };
     },
   },

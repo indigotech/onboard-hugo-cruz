@@ -14,8 +14,8 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
-    "graphql": "^15.0.0",
     "graphql-yoga": "^1.18.3",
+    "jsonwebtoken": "^8.5.1",
     "pg": "^8.0.3",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.24"
