@@ -1,9 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, Unique } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert } from 'typeorm';
 
-var crypto = require('crypto')
-
+import { hashPassword } from '../hashpassword';
 @Entity()
-@Unique(["email"])
 export class User {
   @PrimaryGeneratedColumn()
   id: number
@@ -11,7 +9,7 @@ export class User {
   @Column()
   name: string
 
-  @Column()
+  @Column({ unique: true })
   email: string
 
   @Column()
@@ -25,6 +23,6 @@ export class User {
 
   @BeforeInsert()
   hashpassword(){
-    crypto.createHash('md5').update(this.password).digest("hex");
+    hashPassword(this.password);
   }
 }

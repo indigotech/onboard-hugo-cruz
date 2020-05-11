@@ -1,10 +1,13 @@
 import 'reflect-metadata';
 import{createConnection, getRepository } from 'typeorm';
 import { User } from './entities/User';
+import { hashPassword } from './hashpassword';
 
-var crypto = require('crypto')
 var jwt = require('jsonwebtoken');
+
 const APP_SECRET = 'PASSWORLD'; // signature
+const TEN_MINUTES = 600;
+const ONE_WEEK = 300000;
 
 const { GraphQLServer } = require('graphql-yoga')
 
@@ -68,18 +71,16 @@ const resolvers = {
         ]
       });
       
-      if (user == undefined) {
-        throw new Error("Invalid credentials, please check your e-mail and password");
+      if (!user) {
+        throw new Error("We cannot find an account with that email address");
       }
 
-      data.password = crypto.createHash('md5').update(data.password).digest("hex");
-      if (user.password == data.password) {
+      if (user.password == hashPassword(data.password)) {
 
-        var exp_time: number = 600; // expiration time: 10 min
+        var exp_time: number = TEN_MINUTES;
 
-        // if rememberme is true, expiration time: nearly 1 week
         if (data.rememberMe){
-          exp_time = 300000;
+          exp_time = ONE_WEEK;
         };
 
         const token = jwt.sign({ userId: user.id }, APP_SECRET, {expiresIn: exp_time}); 
