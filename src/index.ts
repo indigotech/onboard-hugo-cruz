@@ -1,7 +1,8 @@
 import 'reflect-metadata';
-import{createConnection, getRepository } from 'typeorm';
-import { User } from './entities/User';
-import { hashPassword } from './hashpassword';
+import { getRepository } from 'typeorm';
+import { User } from './entities/user';
+import {configServer } from './config';
+import { hashPassword } from './hash-password';
 
 var jwt = require('jsonwebtoken');
 
@@ -94,7 +95,7 @@ const resolvers = {
   },
 }
 
-createConnection();
+configServer();
 
 const server = new GraphQLServer({
   typeDefs,
