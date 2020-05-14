@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert } from 'typeorm';
 
-import { hashPassword } from '../hashpassword';
+import { hashPassword } from '../hash-password';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
