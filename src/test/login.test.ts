@@ -1,10 +1,11 @@
 import { expect } from 'chai'
 import  requests from 'supertest';
 import { getRepository, Repository } from 'typeorm';
-import { startServer } from '../server'; 
 import {User} from '../entities/user'
 import { hashPassword } from '../hash-password';
+import * as jwt from 'jsonwebtoken';
 import {INVALID_CREDENTIALS, EMAIL_NOT_FOUND} from '../errors';
+import {TEN_MINUTES, ONE_WEEK, APP_SECRET} from '../consts';
 
 const NAME = "Hugo"
 const EMAIL = "hugo@gmail.com"
@@ -38,7 +39,6 @@ describe('Login mutation tests', () => {
   }
 
   before(async () => {
-    await startServer();
     agent = requests('http://localhost:4000');
     repository = getRepository(User);
 
@@ -66,6 +66,7 @@ describe('Login mutation tests', () => {
     expect(EMAIL).to.be.equals(res.body.data.login.user.email);
     expect(BDATE).to.be.equals(res.body.data.login.user.birthDate);
     expect(CPF).to.be.equals(res.body.data.login.user.cpf);
+    expect(res.body.data.login.token).is.not.empty;
 
    });
 
@@ -84,6 +85,18 @@ describe('Login mutation tests', () => {
   it('should rememberBe be optional', async function() {
     const res = await loginMutation({data: { email:EMAIL, password: PASSW }});
     expect(res.body.errors).to.be.undefined;
+  });
+
+  it('should return 10 min', async function() {
+    const res = await loginMutation({data : { email: EMAIL, password: PASSW, rememberMe: false }});
+    const payload = jwt.decode(res.body.data.login.token);
+    expect(payload.exp - payload.iat).to.be.equals(TEN_MINUTES);
+  });
+
+  it('should return one week', async function() {
+    const res = await loginMutation({data : { email: EMAIL, password: PASSW, rememberMe: true }});
+    const payload = jwt.decode(res.body.data.login.token);
+    expect(payload.exp - payload.iat).to.be.equals(ONE_WEEK);
   });
 
 })

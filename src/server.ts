@@ -1,15 +1,11 @@
 import 'reflect-metadata';
 import { getRepository } from 'typeorm';
 import { User } from './entities/user';
-import {configServer } from './config';
 import { hashPassword } from './hash-password';
 import {INVALID_ID, INVALID_CREDENTIALS, EMAIL_NOT_FOUND} from './errors';
+import {TEN_MINUTES, ONE_WEEK, APP_SECRET} from './consts';
 
 var jwt = require('jsonwebtoken');
-
-const APP_SECRET = 'PASSWORLD'; // signature
-const TEN_MINUTES = 600;
-const ONE_WEEK = 300000;
 
 const { GraphQLServer } = require('graphql-yoga')
 
@@ -57,7 +53,7 @@ export const startServer = async () => {
       async user (_, { id }){
         const user: User = await getRepository(User).findOne(id);
   
-        if (user == undefined) {
+        if (user === undefined) {
           throw new Error(INVALID_ID);
         }
         
@@ -98,12 +94,10 @@ export const startServer = async () => {
     },
   }
 
-    configServer();
-
-    const server = new GraphQLServer({
+  const server = new GraphQLServer({
     typeDefs,
     resolvers,
-    })
+  })
 
-    server.start(() => console.log(`Server is running on http://localhost:4000`))
+  await server.start(() => console.log(`Server is running on http://localhost:4000`))
 }
