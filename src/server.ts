@@ -3,6 +3,7 @@ import { getRepository } from 'typeorm';
 import { User } from './entities/user';
 import {configServer } from './config';
 import { hashPassword } from './hash-password';
+import {INVALID_ID, INVALID_CREDENTIALS, EMAIL_NOT_FOUND} from './errors';
 
 var jwt = require('jsonwebtoken');
 
@@ -25,7 +26,7 @@ export const startServer = async () => {
     name: String!
     email: String!
     birthDate: String!
-    cpf: Int!
+    cpf: String!
   }
   type LoginType {
     user: UserType!
@@ -57,7 +58,7 @@ export const startServer = async () => {
         const user: User = await getRepository(User).findOne(id);
   
         if (user == undefined) {
-          throw new Error("Invalid id.");
+          throw new Error(INVALID_ID);
         }
         
         return user;
@@ -75,7 +76,7 @@ export const startServer = async () => {
         });
         
         if (!user) {
-          throw new Error("We cannot find an account with that email address");
+          throw new Error(EMAIL_NOT_FOUND);
         }
   
         if (user.password == hashPassword(data.password)) {
@@ -91,7 +92,7 @@ export const startServer = async () => {
           return new LoginType(user, token);
   
         } else {
-          throw new Error("Invalid credentials, please check your e-mail and password");
+          throw new Error(INVALID_CREDENTIALS);
         };
       },
     },
