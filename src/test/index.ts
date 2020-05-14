@@ -7,7 +7,7 @@ before(async () => {
     dbConnection = await configServer();
 });
 
-require('./User.test');
+require('./user.test');
 
 after( async () => {
     await dbConnection.close();
