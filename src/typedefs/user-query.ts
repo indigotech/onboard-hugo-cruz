@@ -1,3 +1,5 @@
-export default `type Query {
+export default `
+    type Query {
     user(id: ID!): UserType!
-  }`
+  }
+  `
