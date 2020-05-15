@@ -8,7 +8,7 @@ export default {
 
     Query: {
         
-        async users (_, { users = 20 }, { request }){
+        async users (_, { users = 10 }, { request }){
             
             const token = request.headers.authorization
             

@@ -16,8 +16,8 @@ describe('Users query tests', () => {
   const usersQuery = (token, variable?: { users }) => {
 
     const query = `
-    query ($users: Int){
-      users(users: $users) {
+    query ($users: Int ){
+      users (users: $users ) {
         id 
         name 
         email 
@@ -35,7 +35,7 @@ describe('Users query tests', () => {
   })
 
   after( async () => {
-    await repository.query('DELETE FROM user')
+    //await repository.query('DELETE FROM user')
   })
 
 it('should return a user', async function() {
