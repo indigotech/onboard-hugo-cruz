@@ -1,7 +1,6 @@
-import 'reflect-metadata';
 import { getRepository } from 'typeorm';
 import { User } from '../entities/user'
-import {INVALID_ID} from '../errors';
+import {ID_NOT_FOUND} from '../errors';
 
 export default {
     Query: {
@@ -10,7 +9,7 @@ export default {
         const user: User = await getRepository(User).findOne(id);
 
         if (user === undefined) {
-            throw new Error(INVALID_ID);
+            throw new Error(ID_NOT_FOUND)
         }
         
         return user;

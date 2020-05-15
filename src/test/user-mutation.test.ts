@@ -57,50 +57,50 @@ describe('User mutation tests', () => {
     await repository.delete({ email: EMAIL2})
   })
 
-  it('Example user created', async function() {
+  it('should create a user', async function() {
     expect(NAME).to.be.equals((await getRepository(User).findOne({email: EMAIL})).name);
     expect(BDATE).to.be.equals((await getRepository(User).findOne({email: EMAIL})).birthDate);
     expect(CPF).to.be.equals((await getRepository(User).findOne({email: EMAIL})).cpf);
     expect(hashPassword(PASSW)).to.be.equals((await getRepository(User).findOne({email: EMAIL})).password);
   })
 
-  it('System should not allow two or more users with the same e-mail', async function() {
+  it('should not allow two or more users with the same e-mail', async function() {
     var token = jwt.sign({ userId: 1 }, APP_SECRET, { expiresIn: TEN_MINUTES }); 
     const res = await userMutation( {data: { name: NAME, email:EMAIL, birthDate:BDATE, cpf:CPF, password:PASSW }}, token);
     expect(res.body.errors[0].message).to.be.equals(EMAIL_DUPLICATED);
   });
 
-  it('Password should have at least 1 digit', async function() {
+  it('should check if password has at least one digit', async function() {
     var token = jwt.sign({ userId: 1 }, APP_SECRET, { expiresIn: TEN_MINUTES }); 
     const res = await userMutation( {data: { name: NAME, email:EMAIL2, birthDate:BDATE, cpf:CPF, password:"password" }}, token);
     expect(res.body.errors[0].message).to.be.equals(PASSW_DIGIT);
   })
 
-  it('Password should have at least 1 digit', async function() {
+  it('should check if password has at least one letter', async function() {
     var token = jwt.sign({ userId: 1 }, APP_SECRET, { expiresIn: TEN_MINUTES }); 
     const res = await userMutation( {data: { name: NAME, email:EMAIL2, birthDate:BDATE, cpf:CPF, password:"1234567890" }}, token);
     expect(res.body.errors[0].message).to.be.equals(PASSW_LETTERS);
   })
 
-  it('Password should have at least 1 digit', async function() {
+  it('should check if password has at least seven characters', async function() {
     var token = jwt.sign({ userId: 1 }, APP_SECRET, { expiresIn: TEN_MINUTES }); 
     const res = await userMutation( {data: { name: NAME, email:EMAIL2, birthDate:BDATE, cpf:CPF, password:"pass1" }}, token);
     expect(res.body.errors[0].message).to.be.equals(PASSW_SHORT);
   })
 
-  it('Expired token', async function() {
+  it('should give an error if token is expired', async function() {
     var token = jwt.sign({ userId: 1 }, APP_SECRET, { expiresIn: 0 }); 
     const res = await userMutation( {data: { name: NAME, email:EMAIL2, birthDate:BDATE, cpf:CPF, password:"pass1" }}, token);
     expect(res.body.errors[0].message).to.be.equals(AUTHEN_ERROR);
   })
 
-  it('Invalid token', async function() {
+  it('should give an error if token is invalid', async function() {
     var token = "wrongtoken"
     const res = await userMutation( {data: { name: NAME, email:EMAIL2, birthDate:BDATE, cpf:CPF, password:"pass1" }}, token);
     expect(res.body.errors[0].message).to.be.equals(AUTHEN_ERROR);
   })
 
-  it('Create new user', async function() {
+  it('shold create a user', async function() {
     var token = jwt.sign({ userId: 1 }, APP_SECRET, { expiresIn: TEN_MINUTES }); 
     const res = await userMutation( {data: { name: NAME, email:EMAIL2, birthDate:BDATE, cpf:CPF, password:PASSW }}, token);
     expect(NAME).to.be.equals(res.body.data.createUser.name);

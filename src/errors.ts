@@ -6,4 +6,4 @@ export const PASSW_SHORT = "The password should have at least 7 characters"
 export const AUTHEN_ERROR = "Sorry, you are not authorized to access this area"
 export const PASSW_EXPIRED = "Your login has expired"
 export const INVALID_CREDENTIALS = "Invalid credentials, please check your e-mail and password";
-export const INVALID_ID = "Invalid id."
+export const ID_NOT_FOUND = "Id not found."

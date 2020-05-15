@@ -1,15 +1,18 @@
-import 'reflect-metadata';
-import { Connection } from 'typeorm';
-import { configServer } from './config'
 import { GraphQLServer } from "graphql-yoga";
+import * as dotenv from 'dotenv';
+import path from 'path';
+import {createConnection} from 'typeorm';
 
 import { default as typeDefs } from './typedefs'
 import { default as resolvers } from './resolvers'
 
 export const startServer = async () => {   
   
-  let dbConnection: Connection = await configServer();
-  
+  const isTestMode: boolean = process.env.TEST === 'true';
+  const envFileName = isTestMode ? '.env.test' : '.env';
+  dotenv.config({ path: path.join(__dirname, '..', envFileName) });
+  await createConnection();
+    
   const server = new GraphQLServer({
     typeDefs,
     resolvers,
@@ -18,6 +21,8 @@ export const startServer = async () => {
     },
   })
 
-  await server.start(() => console.log(`Server is running on http://localhost:4000`))
+  await server.start(() => {
+    console.log(`Server is running on http://localhost:4000`)
+  })
 
 }

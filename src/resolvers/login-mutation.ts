@@ -1,12 +1,9 @@
-
-import 'reflect-metadata';
 import { getRepository } from 'typeorm';
 import { User } from '../entities/user'
 import { hashPassword } from '../hash-password'
 import {INVALID_CREDENTIALS, EMAIL_NOT_FOUND} from '../errors';
 import {TEN_MINUTES, ONE_WEEK, APP_SECRET} from '../consts';
-
-var jwt = require('jsonwebtoken');
+import * as jwt from 'jsonwebtoken';
 
 class LoginType {
     user: User;

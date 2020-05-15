@@ -3,8 +3,7 @@ import { User } from '../entities/user'
 import { hashPassword } from '../hash-password'
 import {EMAIL_DUPLICATED, PASSW_DIGIT, PASSW_LETTERS, PASSW_SHORT, AUTHEN_ERROR} from '../errors';
 import {APP_SECRET} from '../consts'
-
-var jwt = require('jsonwebtoken');
+import * as jwt from 'jsonwebtoken';
 
 export default {
 
