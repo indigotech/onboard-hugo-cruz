@@ -7,7 +7,6 @@ import * as jwt from 'jsonwebtoken';
 import {ID_NOT_FOUND, AUTHEN_ERROR} from '../errors';
 import {TEN_MINUTES, APP_SECRET} from '../consts';
 
-var ID = 1
 const NAME = "Hugo"
 const EMAIL = "hugo@gmail.com"
 const EMAIL2 = "joao@gmail.com"
@@ -17,6 +16,7 @@ const BDATE = "04/06/1993"
 
 describe('User query tests', () => {
 
+  let ID = 1;
   let agent;
   let repository: Repository<User>;
 

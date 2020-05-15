@@ -5,28 +5,25 @@ import { hashPassword} from './hash-password'
 import * as dotenv from 'dotenv';
 import path from 'path';
 
-const USERS: number = 10;
-
-const populateDB = async () => {
+export const populateDB = async (users = 20) => {
 
     dotenv.config({ path: path.join(__dirname, '..', ".env.test") });
     await createConnection();
 
     const repository = getRepository(User)
 
-    for (let i = 0; i < USERS; i++) {
-
+    const newusers = Array.from({ length: users }).map(() => {
         const newUser: User = new User();
-
         newUser.name = faker.name.findName();
         newUser.email = faker.internet.email();
         newUser.birthDate = faker.date.past();
         newUser.cpf = faker.random.number();
         newUser.password = hashPassword('password1');
+        return newUser;
+      })
 
-        repository.save(newUser)
-        console.log("Added user " + newUser.name)
-    }
+    await repository.save(newusers)
+    
 }
 
 populateDB();
