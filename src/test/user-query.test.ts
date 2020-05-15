@@ -20,7 +20,7 @@ describe('User query tests', () => {
   let agent;
   let repository: Repository<User>;
 
-  const userMutation = (variable: {id}, token) => {
+  const userQuery = (variable: {id}, token) => {
 
     const query = `
     query ($id: ID!){
@@ -58,8 +58,8 @@ describe('User query tests', () => {
   })
 
   it('should return a user', async function() {
-    var token = jwt.sign({ userId: 1 }, APP_SECRET, { expiresIn: TEN_MINUTES }); 
-    const res = await userMutation( {id: ID }, token);
+    var token = jwt.sign({ userId: ID }, APP_SECRET, { expiresIn: TEN_MINUTES }); 
+    const res = await userQuery( {id: ID }, token);
     expect(ID.toString()).to.be.equals(res.body.data.user.id);
     expect(NAME).to.be.equals(res.body.data.user.name);
     expect(EMAIL).to.be.equals(res.body.data.user.email);
@@ -67,21 +67,21 @@ describe('User query tests', () => {
     expect(CPF).to.be.equals(res.body.data.user.cpf);  
   });
 
-  it('should giva an error if id not found', async function() {
-    var token = jwt.sign({ userId: 1 }, APP_SECRET, { expiresIn: TEN_MINUTES }); 
-    const res = await userMutation( {id: 0 }, token);
+  it('should give an error if id not found', async function() {
+    var token = jwt.sign({ userId: ID }, APP_SECRET, { expiresIn: TEN_MINUTES }); 
+    const res = await userQuery( {id: 0 }, token);
     expect(res.body.errors[0].message).to.be.equals(ID_NOT_FOUND);
   })
 
   it('should give an error if token is expired', async function() {
-    var token = jwt.sign({ userId: 1 }, APP_SECRET, { expiresIn: 0 }); 
-    const res = await userMutation( {id: 0 }, token);
+    var token = jwt.sign({ userId: ID }, APP_SECRET, { expiresIn: 0 }); 
+    const res = await userQuery( {id: ID }, token);
     expect(res.body.errors[0].message).to.be.equals(AUTHEN_ERROR);
   })
 
   it('should give an error if token is invalid', async function() {
     var token = "wrongtoken"
-    const res = await userMutation( {id: 0 }, token);
+    const res = await userQuery( {id: ID }, token);
     expect(res.body.errors[0].message).to.be.equals(AUTHEN_ERROR);
   })
 
