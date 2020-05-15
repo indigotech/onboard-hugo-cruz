@@ -1,5 +1,6 @@
 import { getRepository } from 'typeorm';
 import { User } from '../entities/user'
+import { hashPassword } from '../hash-password'
 import {EMAIL_DUPLICATED, PASSW_DIGIT, PASSW_LETTERS, PASSW_SHORT, AUTHEN_ERROR} from '../errors';
 import {APP_SECRET} from '../consts'
 
@@ -39,8 +40,10 @@ export default {
         throw new Error(PASSW_SHORT)
       }
 
-      return user 
- 
+      const new_user = getRepository(User).save({name: data.name, email:data.email, birthDate: data.birthDate,
+      cpf: data.cpf, password: hashPassword(data.password)})
+
+      return new_user 
     }
   }
 }
