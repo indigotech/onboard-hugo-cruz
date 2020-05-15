@@ -1,5 +1,5 @@
 export default `
-    input LoginInputType {
+  input LoginInputType {
     email: String!
     password: String!
     rememberMe: Boolean

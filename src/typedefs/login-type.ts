@@ -1,5 +1,5 @@
 export default `
-    type LoginType {
+  type LoginType {
     user: UserType!
     token: String!
   }

@@ -1,9 +1,9 @@
 export default `
-  type UserType {
-    id: ID!
+  input CreateUserInput {
     name: String!
     email: String!
     birthDate: String!
     cpf: String!
+    password: String!
   }
   `

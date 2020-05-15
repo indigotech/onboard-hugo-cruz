@@ -1,5 +1,5 @@
 export default `
-    type Mutation {
+  type Mutation {
     login(data:LoginInputType!): LoginType!
   }
   `
