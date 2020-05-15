@@ -1,3 +1,9 @@
 export const EMAIL_NOT_FOUND = "We cannot find an account with that email address";
+export const EMAIL_DUPLICATED = "An account already exists with the e-mail"
+export const PASSW_DIGIT = "The password should have at least 1 digit"
+export const PASSW_LETTERS = "The password should have at least 1 letter"
+export const PASSW_SHORT = "The password should have at least 7 characters"
+export const AUTHEN_ERROR = "Sorry, you are not authorized to access this area"
+export const PASSW_EXPIRED = "Your login has expired"
 export const INVALID_CREDENTIALS = "Invalid credentials, please check your e-mail and password";
 export const INVALID_ID = "Invalid id."

@@ -1,5 +1,5 @@
 export default `
   type Mutation {
-    createUser(user:CreateUserInput!): UserType!
+    createUser(data:CreateUserInput!): UserType
   }
   `
