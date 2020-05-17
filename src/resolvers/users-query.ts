@@ -8,7 +8,7 @@ export default {
 
     Query: {
         
-        async users (_, { users = 10 }, { request }){
+        async users (_, { limit = 10, offset = 0 }, { request }){
             
             const token = request.headers.authorization
             
@@ -18,9 +18,17 @@ export default {
                 throw new Error(AUTHEN_ERROR)
             }
             
-            const v_users: User[] = await getRepository(User).find({ order: { name: 'ASC' }, take: users })
+            const [users, total] = await getRepository(User).findAndCount(({ order: { name: 'ASC' }, take: limit, skip: offset }))
+            
+            const info = { 
+                before: offset > 0, 
+                after: total - (limit + offset) > 0 };
 
-            return v_users
+            console.log(users)
+            console.log(total)
+            console.log(info)
+
+            return { users, total, info }
 
         },
     },

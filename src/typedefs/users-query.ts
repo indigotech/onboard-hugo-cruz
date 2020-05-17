@@ -1,5 +1,5 @@
 export default `
   type Query {
-    users(users: Int): [UserType!]
+    users(limit: Int, offset: Int): UsersType!
   }
   `

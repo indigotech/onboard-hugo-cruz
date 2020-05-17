@@ -13,16 +13,23 @@ describe('Users query tests', () => {
   let agent;
   let repository: Repository<User>;
 
-  const usersQuery = (token, variable?: { users }) => {
+  const usersQuery = (token, variable?: { limit?, offset?}) => {
 
     const query = `
-    query ($users: Int ){
-      users (users: $users ) {
-        id 
-        name 
-        email 
-        birthDate 
-        cpf
+    query ($limit: Int, $offset: Int ) {
+      users (limit: $limit, offset: $offset ) {
+        users {
+          id 
+          name 
+          email 
+          birthDate 
+          cpf
+        }
+        total
+        info {
+          before
+          after
+        }
       }
     }
     `
@@ -40,7 +47,7 @@ describe('Users query tests', () => {
 
 it('should return a user', async function() {
     var token = jwt.sign({ userId: 1 }, APP_SECRET, { expiresIn: TEN_MINUTES }); 
-    const res = await usersQuery(token);
+    const res = await usersQuery(token, { limit: 10, offset: 0 });
     console.log(res)
 
 //     expect(ID.toString()).to.be.equals(res.body.data.user.id);
