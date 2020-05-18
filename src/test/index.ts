@@ -7,3 +7,4 @@ before(async () => {
 
 require('./login-mutation.test');
 require('./user-mutation.test');
+require('./user-query.test');
