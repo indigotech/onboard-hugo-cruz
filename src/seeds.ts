@@ -8,7 +8,8 @@ import path from 'path';
 export const populateDB = async (users = 20) => {
 
     dotenv.config({ path: path.join(__dirname, '..', ".env.test") });
-    await createConnection();
+    
+    let dbConnection = await createConnection();
 
     const repository = getRepository(User)
 
@@ -23,6 +24,7 @@ export const populateDB = async (users = 20) => {
       })
 
     await repository.save(newusers)
+    dbConnection.close()
     
 }
 

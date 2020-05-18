@@ -24,10 +24,6 @@ export default {
                 before: offset > 0, 
                 after: total - (limit + offset) > 0 };
 
-            console.log(users)
-            console.log(total)
-            console.log(info)
-
             return { users, total, info }
 
         },
